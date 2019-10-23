@@ -4,6 +4,7 @@
 "pwm\stm32f4xx_it.o"
 "pwm\gpio.o"
 "pwm\tim.o"
+"pwm\flywheelcontrol.o"
 "pwm\stm32f4xx_hal_tim.o"
 "pwm\stm32f4xx_hal_rcc.o"
 "pwm\stm32f4xx_hal.o"

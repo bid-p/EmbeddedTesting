@@ -31,3 +31,4 @@ pwm\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 pwm\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 pwm\main.o: ../Inc/tim.h
 pwm\main.o: ../Inc/gpio.h
+pwm\main.o: ../Inc/flywheelControl.h

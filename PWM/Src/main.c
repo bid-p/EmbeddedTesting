@@ -41,6 +41,7 @@
 #include "stm32f4xx_hal.h"
 #include "tim.h"
 #include "gpio.h"
+#include "flywheelControl.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -62,31 +63,52 @@ void SystemClock_Config(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-void PWM_SetDuty(TIM_HandleTypeDef *tim,uint32_t tim_channel,float duty){
-	
-	switch(tim_channel){	
-		case TIM_CHANNEL_1: tim->Instance->CCR1 = (PWM_RESOLUTION*duty) - 1;break;
-		case TIM_CHANNEL_2: tim->Instance->CCR2 = (PWM_RESOLUTION*duty) - 1;break;
-		case TIM_CHANNEL_3: tim->Instance->CCR3 = (PWM_RESOLUTION*duty) - 1;break;
-		case TIM_CHANNEL_4: tim->Instance->CCR4 = (PWM_RESOLUTION*duty) - 1;break;
-	}
-	
+void PWM_SetDuty(TIM_HandleTypeDef *tim, uint32_t tim_channel, float duty)
+{
+
+  switch (tim_channel)
+  {
+  case TIM_CHANNEL_1:
+    tim->Instance->CCR1 = (PWM_RESOLUTION * duty) - 1;
+    break;
+  case TIM_CHANNEL_2:
+    tim->Instance->CCR2 = (PWM_RESOLUTION * duty) - 1;
+    break;
+  case TIM_CHANNEL_3:
+    tim->Instance->CCR3 = (PWM_RESOLUTION * duty) - 1;
+    break;
+  case TIM_CHANNEL_4:
+    tim->Instance->CCR4 = (PWM_RESOLUTION * duty) - 1;
+    break;
+  }
 }
 
-void PWM_SetMax(TIM_HandleTypeDef *tim, uint32_t tim_channel, float augment, float max){
-	float duty = 0;
-	while(1){
-		switch(tim_channel){	
-		case TIM_CHANNEL_1: tim->Instance->CCR1 = (duty);break;
-		case TIM_CHANNEL_2: tim->Instance->CCR2 = (duty);break;
-		case TIM_CHANNEL_3: tim->Instance->CCR3 = (duty);break;
-		case TIM_CHANNEL_4: tim->Instance->CCR4 = (duty);break;
-	}
-		duty+=augment;
-		if(duty>max){duty=max;}
-	}
-	
-
+void PWM_SetMax(TIM_HandleTypeDef *tim, uint32_t tim_channel, float augment, float max)
+{
+  float duty = 0;
+  while (1)
+  {
+    switch (tim_channel)
+    {
+    case TIM_CHANNEL_1:
+      tim->Instance->CCR1 = (duty);
+      break;
+    case TIM_CHANNEL_2:
+      tim->Instance->CCR2 = (duty);
+      break;
+    case TIM_CHANNEL_3:
+      tim->Instance->CCR3 = (duty);
+      break;
+    case TIM_CHANNEL_4:
+      tim->Instance->CCR4 = (duty);
+      break;
+    }
+    duty += augment;
+    if (duty > max)
+    {
+      duty = max;
+    }
+  }
 }
 /* USER CODE END 0 */
 
@@ -124,108 +146,98 @@ int main(void)
   MX_TIM5_Init();
   MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
-	led_off();
-	/* Open 4 sets of PWM waves respectively */
-		/**TIM2 GPIO Configuration    
+  led_off();
+  /* Open 4 sets of PWM waves respectively */
+  /**TIM2 GPIO Configuration    
 	PA1     ------> TIM2_CH2
 	PA0     ------> TIM2_CH1
 	PA2     ------> TIM2_CH3
 	PA3     ------> TIM2_CH4 
 	*/
-	
-	HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_4);
 
-	/**TIM4 GPIO Configuration    
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+
+  /**TIM4 GPIO Configuration    
 	PD15     ------> TIM4_CH4
 	PD14     ------> TIM4_CH3
 	PD13     ------> TIM4_CH2
 	PD12     ------> TIM4_CH1 
 	*/
-	HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
 
-	/**TIM5 GPIO Configuration    
+  /**TIM5 GPIO Configuration    
 	PI0     ------> TIM5_CH4
 	PH12     ------> TIM5_CH3
 	PH11     ------> TIM5_CH2
 	PH10     ------> TIM5_CH1 
 	*/
 
-	HAL_TIM_PWM_Start(&htim5,TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim5,TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim5,TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&htim5,TIM_CHANNEL_4);
-	
-	
-	/**TIM8 GPIO Configuration    
+  HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+
+  /**TIM8 GPIO Configuration    
 	PI7     ------> TIM8_CH3
 	PI6     ------> TIM8_CH2
 	PI5     ------> TIM8_CH1
 	PI2     ------> TIM8_CH4 
 	*/
-		
-	HAL_TIM_PWM_Start(&htim8,TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim8,TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim8,TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&htim8,TIM_CHANNEL_4);
-	
-	
-	PWM_SetDuty(&htim8,TIM_CHANNEL_1,0.10);
-	PWM_SetDuty(&htim8,TIM_CHANNEL_2,0.20);
-	PWM_SetDuty(&htim8,TIM_CHANNEL_3,0.30);
-	PWM_SetDuty(&htim8,TIM_CHANNEL_4,0.40);
-	
 
+  HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_4);
 
+  PWM_SetDuty(&htim8, TIM_CHANNEL_1, 0.10);
+  PWM_SetDuty(&htim8, TIM_CHANNEL_2, 0.20);
+  PWM_SetDuty(&htim8, TIM_CHANNEL_3, 0.30);
+  PWM_SetDuty(&htim8, TIM_CHANNEL_4, 0.40);
 
-	
-	
-	
   /* USER CODE END 2 */
-	
-	//Ramp Signal Init Dont mess with this part
-	for(int i=0;i<500;i++){
-		
-		htim2.Instance->CCR2=i; //Channel 2
-		HAL_Delay(2);
-	}
-	for(int i=0;i<500;i++){
-		
-		htim2.Instance->CCR1=i; //Channel 1
-		HAL_Delay(2);
-	}
-	HAL_Delay(500); //Subject to chane 
-  
-	//Init vars
-	int duty = 0; 
-	int max = 700; //Top speed
-	int min = 0; //For testing ununsed right now
-	
-	//Start loop
-  while (1){
-		//Set power
-		
-		htim2.Instance->CCR2=duty;
-		htim2.Instance->CCR1=duty;
-		duty+=10;	//build up to max
-		if(duty>max){duty=max;} //limit 
-		
-		//LED
-		HAL_GPIO_TogglePin(GPIOF, LED_GREEN_Pin);
-		
-		//Delay
-		HAL_Delay(100); //Subject to tweaking just using 10Hz rn
+
+  //Ramp Signal Init
+  //Dont mess with this part
+  rampSignalInit();
+  HAL_Delay(500); //Subject to change
+
+  //Init vars
+  int duty = 0;
+  int max = 700; // CHANGE THIS
+  int min = 0;   // For testing
+
+  //Start loop
+  while (true)
+  {
+    //Set power
+
+    //  htim2.Instance->CCR2 = duty;
+    //  htim2.Instance->CCR1 = duty;
+    //  duty += 10; //build up to max
+    //  if (duty > max)
+    //  {
+    //    duty = max;
+    //  } //limit
+
+    // slewControl(min, max, 1, 20);
+
+    htim2.Instance->CCR1 = max;
+    htim2.Instance->CCR2 = max;
+
+    //LED
+    HAL_GPIO_TogglePin(GPIOF, LED_GREEN_Pin);
+
+    //Delay
+    HAL_Delay(2); //Subject to tweaking just using .5Hz rn
   }
   /* USER CODE END 3 */
-
 }
-
-
 
 /**
   * @brief System Clock Configuration
@@ -237,13 +249,13 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
 
-    /**Configure the main internal regulator output voltage 
+  /**Configure the main internal regulator output voltage 
     */
   __HAL_RCC_PWR_CLK_ENABLE();
 
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-    /**Initializes the CPU, AHB and APB busses clocks 
+  /**Initializes the CPU, AHB and APB busses clocks 
     */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -258,10 +270,9 @@ void SystemClock_Config(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Initializes the CPU, AHB and APB busses clocks 
+  /**Initializes the CPU, AHB and APB busses clocks 
     */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
@@ -272,11 +283,11 @@ void SystemClock_Config(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Configure the Systick interrupt time 
+  /**Configure the Systick interrupt time 
     */
-  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
+  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
 
-    /**Configure the Systick 
+  /**Configure the Systick 
     */
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
@@ -298,13 +309,13 @@ void _Error_Handler(char *file, int line)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-  while(1) 
+  while (1)
   {
   }
   /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
@@ -312,8 +323,8 @@ void _Error_Handler(char *file, int line)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(uint8_t* file, uint32_t line)
-{ 
+void assert_failed(uint8_t *file, uint32_t line)
+{
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
