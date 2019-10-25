@@ -204,37 +204,31 @@ int main(void)
 
   //Ramp Signal Init
   //Dont mess with this part
-  rampSignalInit();
+  rampSignalInit(htim2, 1);
   HAL_Delay(500); //Subject to change
 
   //Init vars
   int duty = 0;
-  int max = 700; // CHANGE THIS
-  int min = 0;   // For testing
+  int max = 1000; // CHANGE THIS
+  //int min = 0;    // For testing
 
   //Start loop
-  while (true)
+  while (1)
   {
     //Set power
-
-    //  htim2.Instance->CCR2 = duty;
-    //  htim2.Instance->CCR1 = duty;
-    //  duty += 10; //build up to max
-    //  if (duty > max)
-    //  {
-    //    duty = max;
-    //  } //limit
-
-    // slewControl(min, max, 1, 20);
-
-    htim2.Instance->CCR1 = max;
-    htim2.Instance->CCR2 = max;
+    htim2.Instance->CCR2 = duty;
+    htim2.Instance->CCR1 = duty;
+    duty += 8 * (max - duty) / max; //build up to max
+    if (duty > max)
+    {
+      duty = max;
+    } //limit
 
     //LED
     HAL_GPIO_TogglePin(GPIOF, LED_GREEN_Pin);
 
     //Delay
-    HAL_Delay(2); //Subject to tweaking just using .5Hz rn
+    HAL_Delay(100); //Subject to tweaking just using 10Hz rn
   }
   /* USER CODE END 3 */
 }
