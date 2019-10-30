@@ -1,44 +1,11 @@
 #include "flywheelControl.h"
 
-void rampSignalInit(TIM_HandleTypeDef tim, int channelNum)
+void rampSignalInit(__uint32_t* reg)
 {
-    switch (channelNum)
+ for (int i = 0; i < 500; i++)
     {
-    case 1:
-        for (int i = 0; i < 500; i++)
-        {
-
-            tim.Instance->CCR1 = i;
-            HAL_Delay(2);
-        }
-        break;
-
-    case 2:
-        for (int i = 0; i < 500; i++)
-        {
-
-            tim.Instance->CCR2 = i;
-            HAL_Delay(2);
-        }
-        break;
-
-    case 3:
-        for (int i = 0; i < 500; i++)
-        {
-
-            tim.Instance->CCR3 = i;
-            HAL_Delay(2);
-        }
-        break;
-
-    case 4:
-        for (int i = 0; i < 500; i++)
-        {
-
-            tim.Instance->CCR4 = i;
-            HAL_Delay(2);
-        }
-        break;
+        *reg = i;
+        HAL_Delay(2);
     }
 }
 
@@ -51,4 +18,8 @@ void slewControl(int initSpeed, int endSpeed, int increment, int delay)
 
         HAL_Delay(delay);
     }
+}
+
+void dutyControl(__uint32_t* reg, int target, int curr, int P){
+    
 }

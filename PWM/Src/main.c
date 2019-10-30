@@ -204,7 +204,7 @@ int main(void)
 
   //Ramp Signal Init
   //Dont mess with this part
-  rampSignalInit(htim2, 1);
+  rampSignalInit(&htim2.Instance->CCR1);
   HAL_Delay(500); //Subject to change
 
   //Init vars

@@ -6,8 +6,10 @@
 #include "tim.h"
 #include "gpio.h"
 
-extern void rampSignalInit(TIM_HandleTypeDef tim, int channelNum);
+extern void rampSignalInit(__uint32_t* reg);
 
 extern void slewControl(int initSpeed, int endSpeed, int increment, int delay);
+
+extern void dutyControl(__uint32_t* reg, int target, int curr, int P);
 
 #endif
