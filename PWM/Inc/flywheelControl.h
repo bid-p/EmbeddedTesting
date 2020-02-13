@@ -6,10 +6,13 @@
 #include "tim.h"
 #include "gpio.h"
 
-extern void rampSignalInit(__uint32_t* reg);
+extern int duty1Fly;
+extern int duty2Fly;
 
-extern void slewControl(int initSpeed, int endSpeed, int increment, int delay);
+extern void initFly();
 
-extern void dutyControl(__uint32_t* reg, int target, int curr, int P);
+extern void slewUpdateFly(int endSpeed, int increment, int delay);
+
+extern void dutyTargetUpdateFly(int target, int curr, int A);
 
 #endif

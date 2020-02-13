@@ -1,25 +1,46 @@
 #include "flywheelControl.h"
 
-void rampSignalInit(__uint32_t* reg)
-{
- for (int i = 0; i < 500; i++)
-    {
-        *reg = i;
-        HAL_Delay(2);
-    }
-}
+int duty1Fly = 0;
+int duty2Fly = 0;
 
-void slewControl(int initSpeed, int endSpeed, int increment, int delay)
+void initFly()
 {
-    for (int i = initSpeed; i <= endSpeed; i += increment)
+    for (int i = 1000; i < 2000; i+=10)
     {
         htim2.Instance->CCR1 = i;
-        htim2.Instance->CCR2 = i;
+			  //htim2.Instance->CCR2 = i;
+        //HAL_Delay(1);
+    }
+		for (int i = 2000; i > 1000; i-=10)
+    {
+        htim2.Instance->CCR1 = i;
+			  //htim2.Instance->CCR2 = i;
+        //HAL_Delay(1);
+    }
+		htim2.Instance->CCR1 = 0;
+		//HAL_Delay(5000);
+}
+
+void slewUpdateFly(int target, int increment, int delay)
+{
+    for (int i = (duty1Fly + duty2Fly) / 2; i <= target; i += increment)
+    {
+        duty1Fly = duty2Fly = i;
 
         HAL_Delay(delay);
     }
 }
 
-void dutyControl(__uint32_t* reg, int target, int curr, int P){
-    
+void dutyTargetUpdateFly(int target, int curr, int A)
+{
+    int duty = (duty1Fly + duty2Fly) / 2;
+    if (duty < target)
+    {
+        duty += A * (target - duty) / target;
+    }
+    if (duty > target)
+    {
+        duty -= A * (target - duty) / target;
+    }
+    duty1Fly = duty2Fly = duty;
 }

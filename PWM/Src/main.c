@@ -204,31 +204,74 @@ int main(void)
 
   //Ramp Signal Init
   //Dont mess with this part
-  rampSignalInit(&htim2.Instance->CCR1);
-  HAL_Delay(500); //Subject to change
+  //initFly(&htim2.Instance->CCR1);
+  //initFly(&htim2.Instance->CCR2);
+
+  //HAL_Delay(500); //Subject to change
 
   //Init vars
-  int duty = 0;
-  int max = 1000; // CHANGE THIS
+	//initFly();
+	htim2.Instance->CCR1 = 2000;
+	HAL_Delay(1000);
+	htim2.Instance->CCR1 = 1000;
+	HAL_Delay(1000);
+	//HAL_Delay(1000);
+	//htim2.Instance->CCR1 = -1000;
+	
+	//htim2.Instance->CCR1 = 550;
+	//for (int i = 1000; i < 1500; i+=10)
+  //{
+	//		htim2.Instance->CCR1 = i;
+	//		//htim2.Instance->CCR2 = i;
+  //   HAL_Delay(10);
+  //}
+	//for (int i = 1500; i > 1000; i-=10)
+  //{
+  //    htim2.Instance->CCR1 = i;
+	//    //htim2.Instance->CCR2 = i;
+  //  HAL_Delay(10);
+  //}
+	//HAL_Delay(1000);
   //int min = 0;    // For testing
 
   //Start loop
+	
+	//NEED 20MS GAP (50HZ)
+	//NEED 1-2MS DUTY
+	//WHAT IS THE CLOCK CYCLE?
+	//for (int i = 500; i < 1000; i++){
+	//		htim2.Instance->CCR1 = i;
+	//		HAL_Delay(10);
+	//}
+
   while (1)
   {
+		//htim2.Instance->CCR1 = 1000;
     //Set power
-    htim2.Instance->CCR2 = duty;
-    htim2.Instance->CCR1 = duty;
-    duty += 8 * (max - duty) / max; //build up to max
-    if (duty > max)
-    {
-      duty = max;
-    } //limit
+    // htim2.Instance->CCR2 = duty;
+    // htim2.Instance->CCR1 = duty;
+    // duty += 8 * (max - duty) / max; //build up to max
+    // if (duty > max)
+    // {
+    //   duty = max;
+    // } //limit
+		
+		//htim2.Instance->CCR1 = 1000;
+		//for (int i = 1000; i > 500; i--){
+		//	htim2.Instance->CCR1 = i;
+		//	HAL_Delay(10);
+		//}
+
+    //slewUpdateFly(800, 1, 5);
 
     //LED
     HAL_GPIO_TogglePin(GPIOF, LED_GREEN_Pin);
 
+    //htim2.Instance->CCR1 = duty1Fly;
+    //htim2.Instance->CCR2 = duty2Fly;
+
     //Delay
-    HAL_Delay(100); //Subject to tweaking just using 10Hz rn
+    HAL_Delay(1000); //Subject to tweaking just using 10Hz rn
   }
   /* USER CODE END 3 */
 }
