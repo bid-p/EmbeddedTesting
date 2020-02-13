@@ -5,20 +5,23 @@ int duty2Fly = 0;
 
 void initFly()
 {
-    for (int i = 1000; i < 2000; i+=10)
+   	//htim2.Instance->CCR1 = 0;
+    //HAL_Delay(1000);
+    for (int i = 500; i <= 1000; i+=1)
     {
         htim2.Instance->CCR1 = i;
-			  //htim2.Instance->CCR2 = i;
-        //HAL_Delay(1);
+			  htim2.Instance->CCR3 = i;
+        HAL_Delay(1);
     }
-		for (int i = 2000; i > 1000; i-=10)
+    for (int i = 1000; i >= 0; i-=1)
     {
-        htim2.Instance->CCR1 = i;
-			  //htim2.Instance->CCR2 = i;
-        //HAL_Delay(1);
+       htim2.Instance->CCR1 = i;
+			 htim2.Instance->CCR3 = i;
+       HAL_Delay(1);
     }
-		htim2.Instance->CCR1 = 0;
-		//HAL_Delay(5000);
+    //HAL_Delay(1000);
+	//htim2.Instance->CCR1 = 1000;
+	HAL_Delay(5000);
 }
 
 void slewUpdateFly(int target, int increment, int delay)

@@ -211,10 +211,10 @@ int main(void)
 
   //Init vars
 	//initFly();
-	htim2.Instance->CCR1 = 2000;
-	HAL_Delay(1000);
-	htim2.Instance->CCR1 = 1000;
-	HAL_Delay(1000);
+	//htim2.Instance->CCR1 = 2000;
+	//HAL_Delay(1000);
+	//htim2.Instance->CCR1 = 1000;
+	//HAL_Delay(1000);
 	//HAL_Delay(1000);
 	//htim2.Instance->CCR1 = -1000;
 	
@@ -235,6 +235,7 @@ int main(void)
   //int min = 0;    // For testing
 
   //Start loop
+	initFly();
 	
 	//NEED 20MS GAP (50HZ)
 	//NEED 1-2MS DUTY
@@ -243,9 +244,17 @@ int main(void)
 	//		htim2.Instance->CCR1 = i;
 	//		HAL_Delay(10);
 	//}
-
+	//htim2.Instance->CCR1 = 1000;
+	//HAL_Delay(1000);
+	//htim2.Instance->CCR1 = 500;
+		for (int i = 500; i < 750; i++){
+			htim2.Instance->CCR1 = i;
+			HAL_Delay(1);
+		}
   while (1)
   {
+			//initFly();
+		  //htim2.Instance->CCR1 = 1000;
 		//htim2.Instance->CCR1 = 1000;
     //Set power
     // htim2.Instance->CCR2 = duty;
@@ -257,10 +266,16 @@ int main(void)
     // } //limit
 		
 		//htim2.Instance->CCR1 = 1000;
-		//for (int i = 1000; i > 500; i--){
-		//	htim2.Instance->CCR1 = i;
-		//	HAL_Delay(10);
-		//}
+    for (int i = 750; i > 500; i--){
+			htim2.Instance->CCR1 = i;
+			htim2.Instance->CCR3 = i;
+			HAL_Delay(1);
+    }
+		for (int i = 500; i < 750; i++){
+			htim2.Instance->CCR1 = i;
+			htim2.Instance->CCR3 = i;
+			HAL_Delay(1);
+		}
 
     //slewUpdateFly(800, 1, 5);
 
@@ -271,7 +286,7 @@ int main(void)
     //htim2.Instance->CCR2 = duty2Fly;
 
     //Delay
-    HAL_Delay(1000); //Subject to tweaking just using 10Hz rn
+    HAL_Delay(2000); //Subject to tweaking just using 10Hz rn
   }
   /* USER CODE END 3 */
 }
